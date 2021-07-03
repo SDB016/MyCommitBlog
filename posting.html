@@ -100,7 +100,7 @@
                     </div>
 
                     <a
-                      href="https://github.com/Trade-Us/unlabeld-tsdata-clustering/commit/eddf66db3bd15315d572e66bea350dc5413effe7/UIwithTemplate/utils/model.py">
+                      href="https://github.com/Trade-Us/unlabeld-tsdata-clustering/commit/eddf66db3bd15315d572e66bea350dc5413effe7/UIwithTemplate/app.py">
                       <img src="githubImg.png" class="w3-hover-opacity w3-margin-top" alt="Norway" style="width:30%">
                     </a>
 
@@ -127,18 +127,7 @@
 
               <div class="w3-container">
                 <pre class="prettyprint lang-python w3-white w3-card-2">
-                  html.Label('Tolerance, default = 1e-4'),
-                  dcc.RadioItems(id='tolerance',
-                  options=[
-                  {'label': '1e-4', 'value': 'O_F'},
-                  ], value='1e-4'),
-                  {'label': '1e-4', 'value': 1e-3},
-                  {'label': '1e-4', 'value': 1e-4},
-                  {'label': '1e-4', 'value': 1e-5},
-                  ], value=1e-4),
-                  html.Label('KMeans를 시도해볼 횟수'),
-                  dcc.Input(id='try-n-init', min=1, value=10, type='number'),
-                  html.Label('Kmeans가 알고리즘 안에 반복되는 최대 횟수'),
+                  @@ -373,13 +373,19 @@ def store_rp_param(img_size, dim, td, th, prtg):<br>     Input(\"autoencoder-learning-rate\", \"value\"),<br>     Input(\"autoencoder-loss-function\", \"value\"),<br>     Input(\"autoencoder-activation-function\", \"value\"),<br>+    Input(\"autoencoder-epoch\", \"value\"),<br>+    Input(\"autoencoder-optimizer\", \"value\"),<br>+    Input(\"autoencoder-dimension-feautre\", \"value\"),<br> )<br>-def store_ae_param(bs, lr, loss_f, act_f):<br>+def store_ae_param(bs, lr, loss_f, act_f, epoch, optm, dim):<br>     df = pd.DataFrame()<br>     df['batch_size'] = [bs]<br>     df['learning_rate'] = [lr]<br>     df['loss_function'] = [loss_f]<br>     df['activation_function'] = [act_f]<br>+    df['epoch'] = [epoch]<br>+    df['optimizer'] = [optm]<br>+    df['dimension_feature'] = [dim]<br>     data = df.to_dict('records')<br>     return data<br> <br>@@ -442,7 +448,7 @@ def exct_ts_sample_kmeans(n_clicks, km_data, parti_columns, value, normalize):<br>     result_ = result_.reshape(result_.shape[0],min_len)<br>     print(result_.shape)<br> <br>-    result = kmeans(result_,km_data[0]['number_of_cluster'] ,float(km_data[0]['tolerance']),km_data[0]['try_n_init'],km_data[0]['try_n_kmeans'])<br>+    result = kmeans(result_,km_data[0]['number_of_cluster'] , km_data[0]['tolerance'],km_data[0]['try_n_init'],km_data[0]['try_n_kmeans'])<br> <br>     print(result.labels_)<br>     return []<br>@@ -487,12 +493,12 @@ def exct_rp_autoencoder_kmeans(n_clicks, rp_data, ae_data, km_data,  parti_colum<br>     #(242,28,1)<br>     result_ = result_.reshape(result_.shape[0],1,result_.shape[1])<br>     #(242,28,28)<br>-    X = toRPdata(result_,rp_data[0]['dimension'],rp_data[0]['time_delay'],None,rp_data[0]['percentage'])<br>+    X = toRPdata(result_,rp_data[0]['dimension'],rp_data[0]['time_delay'],rp_data[0]['threshold'],rp_data[0]['percentage'] / 100)<br>     X_expand = np.expand_dims(X,axis=3)<br>     print(X_expand.shape)<br>-    all_feature = fit_autoencoder(X_expand,rp_data[0]['image_size'],32,'Adam',3e-5,ae_data[0]['activation_function'],'binary_crossentropy',ae_data[0]['batch_size'],5)<br>+    all_feature = fit_autoencoder(X_expand,rp_data[0]['image_size'],ae_data[0]['dimension_feature'],ae_data[0]['optimizer'],(3e-7) * (10**ae_data[0]['learning_rate']),ae_data[0]['activation_function'],ae_data[0]['loss_function'],ae_data[0]['batch_size'],ae_data[0]['epoch'])<br>     print(all_feature.shape)<br>-    result = kmeans(all_feature,km_data[0]['number_of_cluster'] ,float(km_data[0]['tolerance']),km_data[0]['try_n_init'],km_data[0]['try_n_kmeans'])<br>+    result = kmeans(all_feature, km_data[0]['number_of_cluster'] , km_data[0]['tolerance'], km_data[0]['try_n_init'], km_data[0]['try_n_kmeans'])<br> <br>     return []<br> # rp-ae-hierarchy
                 </pre>
               </div>
 
