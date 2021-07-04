@@ -112,4 +112,10 @@ a {
 }
 
 
-  
+.deletedLine{
+  background-color: #ffeef0;
+}
+
+.addedLine{
+  background-color: #e6ffec;
+}
