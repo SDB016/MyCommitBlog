@@ -1,5 +1,6 @@
-from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
+
 
 class UserManager(BaseUserManager):
     def create_user(self, email, date_of_birth, password=None):
@@ -24,6 +25,7 @@ class UserManager(BaseUserManager):
         user.is_admin = True
         user.save(using=self._db)
         return user
+
 
 class User(AbstractBaseUser):
     email = models.EmailField(
@@ -53,6 +55,7 @@ class User(AbstractBaseUser):
     def is_staff(self):
         return self.is_admin
 
+
 class Post(models.Model):
     title = models.CharField(max_length=50, null=False)
     writer = models.CharField(max_length=20, null=False)
@@ -63,7 +66,10 @@ class Post(models.Model):
         return self.title
 
     def summary(self):
-        return self.content[:100]
+        hashs = ''
+        for h in self.commits.all():
+            hashs += h.hashcode + ''
+        return hashs
 
 
 class Commit(models.Model):
@@ -75,6 +81,7 @@ class Commit(models.Model):
     post = models.ForeignKey(
         Post,
         on_delete=models.CASCADE,
+        related_name='commits',
         verbose_name='포스트'
     )
 

@@ -22,4 +22,5 @@ urlpatterns = [
     path('', p.home, name='home'),
     path('posts/', p.posts, name='posts'),
     path('posting/', p.posting, name='posting'),
+    path('<str:id>', p.post, name='post'),
 ]

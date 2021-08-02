@@ -10,6 +10,7 @@ from .forms import UserChangeForm, UserCreationForm
 admin.site.register(Post)
 admin.site.register(Commit)
 
+
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
