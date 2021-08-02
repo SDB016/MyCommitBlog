@@ -6,7 +6,8 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
 <style>
   body,
   h1,
@@ -29,7 +30,7 @@
     <div class="w3-bar-item w3-center" style="margin-top: 300%">
       <span>Dark Mode</span>
       <label class="switch">
-        <input id="checkboxinp" type="checkbox">
+        <input id="checkboxinp" type="checkbox" onclick="toggle(this)">
         <div class="slider round"></div>
       </label>
     </div>
@@ -38,7 +39,7 @@
   <!-- Logout Button-->
   <div class="navigation">
     <a class="button" href="">
-      <img src="img_avatar3.png">
+      <img src="{%static 'img_avatar3.png'%}">
       <div class="logout">LOGOUT</div>
     </a>
   </div>
@@ -116,6 +117,26 @@
     </footer>
   </div>
 
+
+  <script>
+    function toggle(element){
+      var card = document.querySelectorAll(".w3-card-4");
+      if(element.checked){
+        document.querySelector('body').className = 'w3-black';
+        for (var i = 0; i < card.length; i++){
+          card[i].classList.remove('w3-light-grey');
+          card[i].classList.remove('w3-white');
+          card[i].classList.add('w3-dark-grey');
+        }
+      }else{
+        document.querySelector('body').className = 'w3-light-grey';
+        for (var i = 0; i < card.length; i++){
+          card[i].classList.remove('w3-dark-grey');
+          card[i].classList.add('w3-white');
+        }
+      }
+    }
+  </script>
 </body>
 
 </html>

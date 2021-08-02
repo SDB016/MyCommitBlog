@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-<link rel="stylesheet" href="style.css">
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 <style>
@@ -30,7 +31,7 @@
     <div class="w3-bar-item w3-center" style="margin-top: 300%">
       <span>Dark Mode</span>
       <label class="switch">
-        <input id="checkboxinp" type="checkbox">
+        <input id="checkboxinp" type="checkbox" onclick="toggle(this)">
         <div class="slider round"></div>
       </label>
     </div>
@@ -39,7 +40,7 @@
   <!-- Logout Button-->
   <div class="navigation">
     <a class="button" href="">
-      <img src="img_avatar3.png">
+      <img src="{%static 'img_avatar3.png' %}">
       <div class="logout">LOGOUT</div>
     </a>
   </div>
@@ -99,7 +100,7 @@
                         UIwithTemplate/app.py
                       </p>
                       <a href="https://github.com/Trade-Us/unlabeld-tsdata-clustering/commit/eddf66db3bd15315d572e66bea350dc5413effe7/UIwithTemplate/app.py#diff-222d1d40afad31f2f9966af83b4b7c547edcc061b1536bb3c62e4a33f9ffbf4f">
-                        <img src="githubImg.png" class="w3-hover-opacity w3-margin-top" alt="Norway" style="width:30%">
+                        <img src="{%static 'githubImg.png'%}" class="w3-hover-opacity w3-margin-top" alt="Norway" style="width:30%">
                       </a>
                     </div>
                   </div>
@@ -159,7 +160,7 @@
 
                       <a
                         href="https://github.com/Trade-Us/unlabeld-tsdata-clustering/commit/eddf66db3bd15315d572e66bea350dc5413effe7/UIwithTemplate/app.py#diff-ef89611fec251a36778140b18e8aa3c02ae899054e8082d7ce78edd53cd71974">
-                        <img src="githubImg.png" class="w3-hover-opacity w3-margin-top" alt="Norway" style="width:30%">
+                        <img src="{%static 'githubImg.png'%}" class="w3-hover-opacity w3-margin-top" alt="Norway" style="width:30%">
                       </a>
                     </div>
                   </div>
@@ -216,7 +217,7 @@
         <div class="w3-col l2">
           <!--image card-->
           <div class="w3-card-4 w3-margin w3-margin-top">
-            <img src="img_avatar3.png" alt="Person" style="width:100%">
+            <img src="{%static 'img_avatar3.png'%}" alt="Person" style="width:100%">
             <div class="w3-container ">
               <h4><b>Dongbin Shin</b></h4>
               <p>The boss of all bosses</p>
@@ -239,22 +240,22 @@
             </div>
             <ul class="w3-ul w3-hoverable w3-white">
               <li class="w3-padding-16">
-                <img src="post_img4.png" alt="Image" class="w3-left w3-margin-right" style="width:100%">
+                <img src="{%static 'post_img4.png'%}" alt="Image" class="w3-left w3-margin-right" style="width:100%">
                 <span class="w3-large">Account controller</span><br>
                 <span>Sed mattis nunc</span>
               </li>
               <li class="w3-padding-16">
-                <img src="post_img1.png" alt="Image" class="w3-left w3-margin-right" style="width:100%">
+                <img src="{%static 'post_img1.png'%}" alt="Image" class="w3-left w3-margin-right" style="width:100%">
                 <span class="w3-large">Sign up</span><br>
                 <span>Praes tinci sed</span>
               </li>
               <li class="w3-padding-16">
-                <img src="post_img3.png" alt="Image" class="w3-left w3-margin-right" style="width:100%">
+                <img src="{%static 'post_img3.png'%}" alt="Image" class="w3-left w3-margin-right" style="width:100%">
                 <span class="w3-large">Notification view</span><br>
                 <span>Ultricies congue</span>
               </li>
               <li class="w3-padding-16 w3-hide-medium w3-hide-small">
-                <img src="post_img2.png" alt="Image" class="w3-left w3-margin-right" style="width:100%">
+                <img src="{%static 'post_img2.png'%}" alt="Image" class="w3-left w3-margin-right" style="width:100%">
                 <span class="w3-large">Profile view</span><br>
                 <span>Lorem ipsum dipsum</span>
               </li>
@@ -299,6 +300,26 @@
     </footer>
   </div>
 
+
+  <script>
+    function toggle(element){
+      var card = document.querySelectorAll(".w3-card-4");
+      if(element.checked){
+        document.querySelector('body').className = 'w3-black';
+        for (var i = 0; i < card.length; i++){
+          card[i].classList.remove('w3-light-grey');
+          card[i].classList.remove('w3-white');
+          card[i].classList.add('w3-dark-grey');
+        }
+      }else{
+        document.querySelector('body').className = 'w3-light-grey';
+        for (var i = 0; i < card.length; i++){
+          card[i].classList.remove('w3-dark-grey');
+          card[i].classList.add('w3-white');
+        }
+      }
+    }
+  </script>
 </body>
 
 </html>
