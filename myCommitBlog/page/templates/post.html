@@ -75,24 +75,21 @@
           <!-- Blog entry -->
 
           <div class="w3-card-4 w3-margin ">
+              <div class="w3-container">
+                <h2>{{post.title}}</h2>
+              </div>
                 {% for commit in post.commits.all %}
                 <div>
-                  <div class="w3-container">
-                    <h2>{{post.title}}</h2>
-                  </div>
                   <br>
-                  <div class="w3-container">
-                    <h3><b>Commit</b></h3>
-                  </div>
                   <div class="w3-row">
                     <div class="w3-col l6">
                       <div class="w3-card-2 w3-margin w3-margin-top">
                         <div class="w3-container w3-white">
                           <h4><b>filename</b></h4>
                           <p>
-                            {{post.commitFileName}}
+                            {{commit.fileName}}
                           </p>
-                          <a href={{post.commitUrl}}>
+                          <a href={{commit.url}}>
                             <img src="{%static 'githubImg.png'%}" class="w3-hover-opacity w3-margin-top" alt="Norway" style="width:30%">
                           </a>
                         </div>
@@ -105,8 +102,7 @@
                         <div class="w3-container w3-white">
                           <h4><b>message</b></h4>
                           <p>
-                            REVISE layout files and app.py : add more parameter for user setting AND REVISE model : 28model
-                            accept dimension flexibly
+                              {{commit.message}}
                           </p>
                         </div>
                       </div>
@@ -121,8 +117,7 @@
                   <div class="w3-container">
                     <h3><b>Comments</b></h3>
                     <div class="w3-group">
-                      <textarea class="w3-input w3-border w3-animate-input" style="width:50%" placeholder="내용을 작성해주세요"
-                        required></textarea>
+                      <h4>{{commit.comment }}</h4>
                     </div>
                     <br><br>
                   </div>
