@@ -13,3 +13,6 @@ def posts(request):
 
 def posting(request):
     return render(request, "posting.html")
+
+
+
