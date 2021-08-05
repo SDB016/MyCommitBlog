@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-!k^hq9ud&i0d9m*mhqch#uu-1i4)8iev@dls_+kk4z&0^so9!f
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL = 'account.CustomUser'
 
 # Application definition
 
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'page.apps.PageConfig',
+    'account.apps.AccountConfig'
 ]
 
 MIDDLEWARE = [
@@ -128,5 +129,3 @@ STATICFILES_DIRS = (
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-AUTH_USER_MODEL = 'page.User'
