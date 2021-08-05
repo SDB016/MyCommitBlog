@@ -56,7 +56,7 @@ ROOT_URLCONF = 'myCommitBlog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['myCommitBlog/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
