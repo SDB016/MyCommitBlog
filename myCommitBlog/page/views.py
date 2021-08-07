@@ -35,4 +35,7 @@ def updatePost(request,id):
     updatePost.save()
     return redirect('post', updatePost.id)
 
-
+def deletePost(request, id):
+    deletePost = Post.objects.get(id=id)
+    deletePost.delete()
+    return redirect('posts')

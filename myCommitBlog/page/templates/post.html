@@ -123,7 +123,8 @@
                   </div>
                 </div>
                 {% endfor %}
-            <button class="w3-button w3-padding-large w3-margin-bottom w3-border w3-round-large w3-teal" onclick="location.href='{% url 'editPost' post.id%}' "><b>POST</b></button>
+            <button class="w3-button w3-padding-large w3-margin-bottom w3-border w3-round-large w3-teal" onclick="location.href='{% url 'editPost' post.id%}' "><b>EDIT</b></button>
+            <button class="w3-button w3-padding-large w3-margin-bottom w3-border w3-round-large w3-red" onclick="location.href='{% url 'deletePost' post.id%}' "><b>DELETE</b></button>
           </div>
           <!-- END BLOG ENTRIES -->
         </div>
