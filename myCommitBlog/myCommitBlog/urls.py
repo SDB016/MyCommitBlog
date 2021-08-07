@@ -25,5 +25,6 @@ urlpatterns = [
     path('posting/', p.posting, name='posting'),
     path('<str:id>', p.post, name='post'),
     path('account/', include('account.urls')),
+    path('createPost/', p.createPost, name='createPost')
 
 ]
