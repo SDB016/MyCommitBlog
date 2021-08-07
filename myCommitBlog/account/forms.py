@@ -3,4 +3,4 @@ from .models import CustomUser
 class RegisterForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ['username','password','password2','github','token']
+        fields = ['username','password1','password2','github','token']

@@ -7,7 +7,7 @@ from .forms import RegisterForm
 
 def login_view(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request=request,data = request.POST)
+        form = AuthenticationForm(request,request.POST)
         if form.is_valid():
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
