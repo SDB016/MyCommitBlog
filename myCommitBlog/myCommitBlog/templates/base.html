@@ -18,43 +18,46 @@
     font-family: "Raleway", sans-serif
   }
 </style>
-
 <body class="w3-light-grey">
-
-
   <div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:130px">
     <h5 class="w3-bar-item w3-text-teal">Setting</h5>
-    <button class="w3-bar-item w3-button tablink">Dongbin Shin</button>
+    {% if user.is_authenticated %}
+    <button class="w3-bar-item w3-button tablink">{{user.username}}</button>
     <button class="w3-bar-item w3-button tablink">Profile</button>
     <button class="w3-bar-item w3-button tablink">Blog setting</button>
+    {% else %}
+    <button class="w3-bar-item w3-button tablink" onclick="location.href='{% url 'login' %}'">Sign in</button>
+    <button class="w3-bar-item w3-button tablink" onclick="location.href='{% url 'signup' %}'">Sign up</button>
+    {% endif %}
     <!-- Rounded switch -->
     <div class="w3-bar-item w3-center" style="margin-top: 300%">
       <span>Dark Mode</span>
       <label class="switch">
         <input id="darkModeToggle" type="checkbox" onclick="toggle(this)">
-        <div class="slider round"></div>
+        <div class="slider round">
+
+        </div>
       </label>
     </div>
   </div>
-
-  {% if user.is_authenticated %}
-    <!-- Logout Button-->
-  <div class="navigation">
-    <a class="button" href="{% url 'logout' %}">
-      <img src="{%static 'img_avatar3.png' %}">
-      <div class="logout">LOGOUT</div>
-    </a>
+  <div>
+    {% if user.is_authenticated %}
+      <!-- Logout Button-->
+    <div class="navigation">
+      <a class="button" href="{% url 'logout' %}">
+        <img src="{%static 'img_avatar3.png' %}">
+        <div class="logout">LOGOUT</div>
+      </a>
+    </div>
+    {% else %}
+    <div class="navigation">
+      <a class="button" href="{% url 'login' %}">
+        <img src="{%static 'img_avatar3.png' %}">
+        <div class="login"> LOGIN</div>
+      </a>
+    </div>
+    {% endif %}
   </div>
-  {% else %}
-  
-  <div class="navigation">
-    <a class="button" href="{% url 'login' %}">
-      <img src="{%static 'img_avatar3.png' %}">
-      <div class="login"> LOGIN</div>
-    </a>
-  </div>
-  {% endif %}
-
 
   <div style="margin-left:130px">
     <!-- w3-content defines a container for fixed size centered content,
@@ -69,7 +72,6 @@
         {%else%}
         <p>please sign in or sign up</p>
         {% endif %}
-        
       </header>
 
       <!-- Nav Bar-->
@@ -77,23 +79,19 @@
         <a href="/" class="w3-bar-item w3-button w3-mobile w3-text-teal">Home</a>
         <a href="#" class="w3-bar-item w3-button w3-mobile">Resume</a>
         <a href="#" class="w3-bar-item w3-button w3-mobile">Github</a>
-        <a href="/posts" class="w3-bar-item w3-button w3-mobile">Posts</a>
+        <a href="/posts/" class="w3-bar-item w3-button w3-mobile">Posts</a>
         <a href="#" class="w3-bar-item w3-button w3-teal w3-right">Go</a>
         <input type="text" class="w3-bar-item w3-input w3-right" placeholder="Search..">
-        <a href="/posting" class="w3-bar-item w3-button w3-mobile w3-right"><i class="far fa-plus-square fa-1g"
+        <a href="/posting/" class="w3-bar-item w3-button w3-mobile w3-right"><i class="far fa-plus-square fa-1g"
             aria-hidden="true"></i></a>
       </div>
+
+
+{% block content %}
+{% endblock %}
+
+     <!-- END w3-content -->
     </div>
-
-    <div class = 'container'>
-        <p>hello</p>
-        {% block content %}
-        {% endblock %}
-
-    </div>
-    
-
-
 
     <!-- Footer -->
     <footer class="w3-container w3-dark-grey w3-padding-32 w3-margin-top">
