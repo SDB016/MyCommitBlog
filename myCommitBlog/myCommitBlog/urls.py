@@ -25,6 +25,8 @@ urlpatterns = [
     path('posting/', p.posting, name='posting'),
     path('<str:id>', p.post, name='post'),
     path('account/', include('account.urls')),
-    path('createPost/', p.createPost, name='createPost')
+    path('createPost/', p.createPost, name='createPost'),
+    path('edit/<str:id>', p.editPost, name='editPost'),
+    path('update/<str:id>', p.updatePost, name='updatePost')
 
 ]

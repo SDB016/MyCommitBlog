@@ -18,7 +18,6 @@ class Post(models.Model):
         newPost.save()
         return newPost
 
-
     def __str__(self):
         return self.title
 
