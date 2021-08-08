@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post
 from django.utils import timezone
+import requests
+
 
 def home(request):
     posts = Post.objects.all()
@@ -13,7 +15,40 @@ def posts(request):
 
 
 def posting(request):
-    return render(request, "posting.html")
+    if request.method == 'POST':
+        commits = []
+        token = "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"
+        owner = "SDB016"
+        repo = "MyCommitBlog"
+        query_url = f"https://api.github.com/repos/{owner}/{repo}/commits"
+        params = {
+        "state": "open",
+        }
+
+        headers = {'Authorization': f'token {token}'}
+        r = requests.get(query_url, headers=headers, params=params)
+        datas = r.json()
+        for data in datas:
+            #commit 
+            files_r = requests.get(query_url + f"/{data['sha']}", headers=headers, params=params)
+            files_datas = files_r.json() 
+
+            commit_dict = {}
+            commit_dict['date'] = data['commit']['author']['date']
+            commit_dict['message'] = data['commit']['message']
+            commit_dict['url'] = data['html_url']
+            commit_dict['files']=""
+            for file in files_datas['files']:
+                commit_dict['files'] += file['filename']+"\n"
+            
+            commit_dict['patch'] = files_datas['files'][0]['patch']
+            
+            commits.append(commit_dict)
+            
+            break
+        return render(request, "posting.html",{'commits':commits})
+    else:
+        return render(request,"posting.html")
 
 def post(request, id):
     post = get_object_or_404(Post, pk = id)
