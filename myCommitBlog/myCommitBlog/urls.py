@@ -16,18 +16,10 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path,include
-from page import views as p
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', p.home, name='home'),
-    path('posts/', p.posts, name='posts'),
-    path('posting/', p.posting, name='posting'),
-    path('<str:id>', p.post, name='post'),
     path('account/', include('account.urls')),
-    path('createPost/', p.createPost, name='createPost'),
-    path('edit/<str:id>', p.editPost, name='editPost'),
-    path('update/<str:id>', p.updatePost, name='updatePost'),
-    path('delete/<str:id>', p.deletePost, name='deletePost')
+    path('', include('page.urls')),
 
 ]

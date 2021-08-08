@@ -17,9 +17,9 @@ def posts(request):
 def posting(request):
     if request.method == 'POST':
         commits = []
-        token = "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"
-        owner = "SDB016"
-        repo = "MyCommitBlog"
+        token = request.POST['token']
+        owner = request.POST['owner']
+        repo = request.POST['repo']
         query_url = f"https://api.github.com/repos/{owner}/{repo}/commits"
         params = {
         "state": "open",
