@@ -22,8 +22,8 @@
   <div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:130px">
     <h5 class="w3-bar-item w3-text-teal">Setting</h5>
     {% if user.is_authenticated %}
-    <button class="w3-bar-item w3-button tablink">{{user.username}}</button>
-    <button class="w3-bar-item w3-button tablink" onclick="location.href='{% url 'profile' %}'">Profile</button>
+    <button class="w3-bar-item w3-button tablink" onclick="location.href='{% url 'updateProfile' user.id%}'">{{user.username}}</button>
+    <button class="w3-bar-item w3-button tablink" onclick="location.href='{% url 'profile' user.id%}'">Profile</button>
     <button class="w3-bar-item w3-button tablink">Blog setting</button>
     {% else %}
     <button class="w3-bar-item w3-button tablink" onclick="location.href='{% url 'login' %}'">Sign in</button>
