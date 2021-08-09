@@ -59,13 +59,16 @@
                 <div class="w3-container">
                   <h3><b>Commit</b></h3>
                 </div>
+                {% for file in commit.files %}
                 <div class="w3-row">
                   <div class="w3-col l6">
                     <div class="w3-card-2 w3-margin w3-margin-top">
                       <div class="w3-container w3-white">
+                        
                         <h4><b>filename</b></h4>
                         <p>
-                          {{commit.files}}
+                          
+                            {{file.filename}}
                         </p>
                         <a href="https://github.com/Trade-Us/unlabeld-tsdata-clustering/commit/eddf66db3bd15315d572e66bea350dc5413effe7/UIwithTemplate/app.py#diff-222d1d40afad31f2f9966af83b4b7c547edcc061b1536bb3c62e4a33f9ffbf4f">
                           <img src="{%static 'githubImg.png'%}" class="w3-hover-opacity w3-margin-top" alt="Norway" style="width:30%">
@@ -88,20 +91,23 @@
                 </div>
                 <div class="w3-container">
                   <pre class="prettyprint lang-python w3-white w3-card-2">
-                    {{commit.patch}}
+                    {{file.patch}}
                   </pre>
                 </div>
+                <div class="w3-container">
+                  <h3><b>Comments</b></h3>
+                  <div class="w3-group">
+                    <textarea class="w3-input w3-border w3-animate-input" name="comments" style="width:70%" placeholder="내용을 작성해주세요"
+                      required></textarea>
+                  </div>
+                  <br>
+                  <br>
+                </div>
+              {% endfor %}
               </div>
 
-              <div class="w3-container">
-                <h3><b>Comments</b></h3>
-                <div class="w3-group">
-                  <textarea class="w3-input w3-border w3-animate-input" name="comments" style="width:70%" placeholder="내용을 작성해주세요"
-                    required></textarea>
-                </div>
-                <br>
-                <br>
-              </div>
+              
+              
               {% endfor %}
 
               <div class="w3-container">

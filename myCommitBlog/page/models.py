@@ -22,15 +22,27 @@ class Post(models.Model):
         return self.title
 
 class Commit(models.Model):
-    fileName = models.CharField(max_length=50)
     hashcode = models.CharField(max_length=10)
     url = models.URLField()
-    message = models.TextField()
-    patch = models.TextField()
+    message = models.TextField(null=False)
     post = models.ForeignKey(
         Post,
         on_delete=models.CASCADE,
         verbose_name='포스트',
         related_name='commit'
     )
+    def create(self,post_id):
+        newCommit = Commit()
+        newCommit.post_id = post_id
+        newCommit.save()
+        return newCommit
 
+class File(models.Model):
+    fileName = models.TextField()
+    patch = models.TextField()
+    commit = models.ForeignKey(
+        Commit,
+        on_delete=models.CASCADE,
+        verbose_name='커밋',
+        related_name='file'
+    )

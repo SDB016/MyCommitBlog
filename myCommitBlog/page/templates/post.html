@@ -13,14 +13,18 @@
                 <h1>{{post.title}}</h1>
               </div>
                 {% for commit in post.commit.all %}
-              <div>
+                <div class="w3-container">
+                  <h3><b>Commit</b></h3>
+                </div>
+                {% for file in commit.file.all %}
+              <div>  
                 <div class="w3-row w3-margin w3-margin-top">
                   <div class="w3-col l6">
                     <div class="w3-card-2 w3-margin w3-margin-top">
                       <div class="w3-container w3-white">
                         <h4><b>filename</b></h4>
                         <p>
-                          {{commit.fileName}}
+                          {{file.fileName}}
                         </p>
                         <a href="https://github.com/Trade-Us/unlabeld-tsdata-clustering/commit/eddf66db3bd15315d572e66bea350dc5413effe7/UIwithTemplate/app.py#diff-222d1d40afad31f2f9966af83b4b7c547edcc061b1536bb3c62e4a33f9ffbf4f">
                           <img src="{%static 'githubImg.png'%}" class="w3-hover-opacity w3-margin-top" alt="Norway" style="width:30%">
@@ -43,11 +47,11 @@
                 </div>
                 <div class="w3-container">
                   <pre class="prettyprint lang-python w3-white w3-card-2 w3-margin w3-margin-top">
-                    {{commit.patch}}
+                    {{file.patch}}
                   </pre>
                 </div>
               </div>
-
+              {% endfor %}
               <div class="w3-container">
                 <div class="w3-card-2 w3-margin w3-margin-top">
                       <div class="w3-container w3-white">
