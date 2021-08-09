@@ -136,15 +136,14 @@
             <img src="{%static 'img_avatar3.png'%}" alt="Person" style="width:100%">
             <div class="w3-container">
               <h4><b>{{user.username}}</b></h4>
-              <p>The boss of all bosses</p>
+              <p>{{user.shortDescription}}</p>
             </div>
           </div>
 
           <!-- About Card -->
           <div class="w3-card-4 w3-margin w3-margin-top">
             <div class="w3-container w3-white">
-              <p>Just me, myself and I, exploring the universe of uknownment. I have a heart of love and a interest of
-                lorem ipsum and mauris neque quam blog. I want to share my world with you.</p>
+              <p>{{user.fullDescription}}</p>
             </div>
           </div>
           <hr>
