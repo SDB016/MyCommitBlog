@@ -19,59 +19,73 @@
 
             <form class="w3-container" action="{% url 'updatePost' post.id %}" method="post">
               {% csrf_token %}
+              <input type="hidden" name="token" id="token" value={{token}}>
+              <input type="hidden" name="owner" id="owner" value={{owner}}>
+              <input type="hidden" name="repo" id="repo" value={{repo}}>
+
               <div class="w3-container">
                 <h3><b>Title</b></h3>
                 <input class="w3-input w3-border w3-animate-input" type="text" style="width:40%"
-                  placeholder="글 제목을 입력해주세요" name="title" value="{{post.title}}">
+                  placeholder="글 제목을 입력해주세요" name="title" >
               </div>
               <br>
-              <div class="w3-container">
-                <h3><b>Commit</b></h3>
-              </div>
-              <div class="w3-row">
-                <div class="w3-col l6">
-                  <div class="w3-card-2 w3-margin w3-margin-top">
-                    <div class="w3-container w3-white">
-                      <h4><b>filename</b></h4>
-                      <p>
-                        UIwithTemplate/app.py
-                      </p>
-                      <a href="https://github.com/Trade-Us/unlabeld-tsdata-clustering/commit/eddf66db3bd15315d572e66bea350dc5413effe7/UIwithTemplate/app.py#diff-222d1d40afad31f2f9966af83b4b7c547edcc061b1536bb3c62e4a33f9ffbf4f">
-                        <img src="{%static 'githubImg.png'%}" class="w3-hover-opacity w3-margin-top" alt="Norway" style="width:30%">
-                      </a>
-                    </div>
-                  </div>
-                  <hr>
-                </div>
-                <div class="w3-col l6 w3-right  ">
-                  <div class="w3-card-2 w3-margin w3-margin-top">
-                    <div class="w3-container w3-white">
-                      <h4><b>message</b></h4>
-                      <p>
-                        REVISE layout files and app.py : add more parameter for user setting AND REVISE model : 28model
-                        accept dimension flexibly
-                      </p>
-                    </div>
-                  </div>
-                  <hr>
-                </div>
-              </div>
-              <div class="w3-container">
-                <pre class="prettyprint lang-python w3-white w3-card-2">
-                  @@ -373,13 +373,19 @@ def store_rp_param(img_size, dim, td, th, prtg):<br>     Input(\"autoencoder-learning-rate\", \"value\"),<br>     Input(\"autoencoder-loss-function\", \"value\"),<br>     Input(\"autoencoder-activation-function\", \"value\"),<br>+    Input(\"autoencoder-epoch\", \"value\"),<br>+    Input(\"autoencoder-optimizer\", \"value\"),<br>+    Input(\"autoencoder-dimension-feautre\", \"value\"),<br> )<br>-def store_ae_param(bs, lr, loss_f, act_f):<br>+def store_ae_param(bs, lr, loss_f, act_f, epoch, optm, dim):<br>     df = pd.DataFrame()<br>     df['batch_size'] = [bs]<br>     df['learning_rate'] = [lr]<br>     df['loss_function'] = [loss_f]<br>     df['activation_function'] = [act_f]<br>+    df['epoch'] = [epoch]<br>+    df['optimizer'] = [optm]<br>+    df['dimension_feature'] = [dim]<br>     data = df.to_dict('records')<br>     return data<br> <br>@@ -442,7 +448,7 @@ def exct_ts_sample_kmeans(n_clicks, km_data, parti_columns, value, normalize):<br>     result_ = result_.reshape(result_.shape[0],min_len)<br>     print(result_.shape)<br> <br>-    result = kmeans(result_,km_data[0]['number_of_cluster'] ,float(km_data[0]['tolerance']),km_data[0]['try_n_init']<br>    ,km_data[0]['try_n_kmeans'])<br>+    result = kmeans(result_,km_data[0]['number_of_cluster'] , km_data[0]['tolerance'],km_data[0]['try_n_init']<br>    ,km_data[0]['try_n_kmeans'])<br> <br>     print(result.labels_)<br>     return []<br>@@ -487,12 +493,12 @@ def exct_rp_autoencoder_kmeans(n_clicks, rp_data, ae_data, km_data,  parti_colum<br>     #(242,28,1)<br>     result_ = result_.reshape(result_.shape[0],1,result_.shape[1])<br>     #(242,28,28)<br>-    X = toRPdata(result_,rp_data[0]['dimension'],rp_data[0]['time_delay'],None,rp_data[0]['percentage'])<br>+    X = toRPdata(result_,rp_data[0]['dimension'],rp_data[0]['time_delay'],rp_data[0]['threshold'],rp_data[0]['percentage'] / 100)<br>     X_expand = np.expand_dims(X,axis=3)<br>     print(X_expand.shape)<br>-    all_feature = fit_autoencoder(X_expand,rp_data[0]['image_size'],32,'Adam',3e-5,ae_data[0]['activation_function']<br>    ,'binary_crossentropy',ae_data[0]['batch_size'],5)<br>+    all_feature = fit_autoencoder(X_expand,rp_data[0]['image_size'],ae_data[0]['dimension_feature'],ae_data[0]['optimizer']<br>    ,(3e-7) * (10**ae_data[0]['learning_rate']),ae_data[0]['activation_function'],ae_data[0]['loss_function'],ae_data[0]<br>    ['batch_size'],ae_data[0]['epoch'])<br>     print(all_feature.shape)<br>-    result = kmeans(all_feature,km_data[0]['number_of_cluster'] ,float(km_data[0]['tolerance']),km_data[0]['try_n_init']<br>    ,km_data[0]['try_n_kmeans'])<br>+    result = kmeans(all_feature, km_data[0]['number_of_cluster'] , km_data[0]['tolerance'], km_data[0]['try_n_init']<br>, km_data[0]['try_n_kmeans'])<br> <br>     return []<br> # rp-ae-hierarchy
-                </pre>
-              </div>
 
 
+
+              {% for commit in commits %}
+              <div>
+                <div class="w3-container">
+                  <h3><b>Commit</b></h3>
+                </div>
+                {% for file in commit.files %}
+                <div class="w3-row">
+                  <div class="w3-col l6">
+                    <div class="w3-card-2 w3-margin w3-margin-top">
+                      <div class="w3-container w3-white">
+                        
+                        <h4><b>filename</b></h4>
+                        <p>
+                          
+                            {{file.filename}}
+                        </p>
+                        <a href="https://github.com/Trade-Us/unlabeld-tsdata-clustering/commit/eddf66db3bd15315d572e66bea350dc5413effe7/UIwithTemplate/app.py#diff-222d1d40afad31f2f9966af83b4b7c547edcc061b1536bb3c62e4a33f9ffbf4f">
+                          <img src="{%static 'githubImg.png'%}" class="w3-hover-opacity w3-margin-top" alt="Norway" style="width:30%">
+                        </a>
+                      </div>
+                    </div>
+                    <hr>
+                  </div>
+                  <div class="w3-col l6 w3-right  ">
+                    <div class="w3-card-2 w3-margin w3-margin-top">
+                      <div class="w3-container w3-white">
+                        <h4><b>message</b></h4>
+                        <p>
+                          {{commit.message}}
+                        </p>
+                      </div>
+                    </div>
+                    <hr>
+                  </div>
+                </div>
+                <div class="w3-container">
+                  <pre class="prettyprint lang-python w3-white w3-card-2">
+                    {{file.patch}}
+                  </pre>
+                </div>
+                
+              {% endfor %}
               <div class="w3-container">
                 <h3><b>Comments</b></h3>
                 <div class="w3-group">
-                  <textarea class="w3-input w3-border w3-animate-input" name="comments" style="width:50%" placeholder="내용을 작성해주세요"
-                    required>{{post.comment}}</textarea>
+                  <textarea class="w3-input w3-border w3-animate-input" name="comments[]" style="width:70%" placeholder="내용을 작성해주세요"
+                    required></textarea>
                 </div>
                 <br>
                 <br>
               </div>
+
+              </div>
+              {% endfor %}
 
               <div class="w3-container">
                 <div class="w3-bar">

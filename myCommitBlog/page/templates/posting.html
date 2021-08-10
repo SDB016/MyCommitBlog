@@ -94,16 +94,18 @@
                     {{file.patch}}
                   </pre>
                 </div>
-                <div class="w3-container">
-                  <h3><b>Comments</b></h3>
-                  <div class="w3-group">
-                    <textarea class="w3-input w3-border w3-animate-input" name="comments" style="width:70%" placeholder="내용을 작성해주세요"
-                      required></textarea>
-                  </div>
-                  <br>
-                  <br>
-                </div>
+                
               {% endfor %}
+              <div class="w3-container">
+                <h3><b>Comments</b></h3>
+                <div class="w3-group">
+                  <textarea class="w3-input w3-border w3-animate-input" name="comments[]" style="width:70%" placeholder="내용을 작성해주세요"
+                    required></textarea>
+                </div>
+                <br>
+                <br>
+              </div>
+
               </div>
 
               
