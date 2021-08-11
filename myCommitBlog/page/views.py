@@ -17,7 +17,7 @@ def posts(request):
 
 def posting(request):
     if request.method == 'POST':
-        token = request.POST['token']
+        token = request.user.token
         owner = request.POST['owner']
         repo = request.POST['repo']
         commits = getCommits(token, owner, repo)
@@ -35,7 +35,7 @@ def createPost(request):
     comments = request.POST.getlist('comments[]')
     newPost = Post().create(request.POST['title'])
     newPost.user = request.user
-    token = request.POST['token']
+    token = request.user.token
     owner = request.POST['owner']
     repo = request.POST['repo']
     commits = getCommits(token, owner, repo)

@@ -27,9 +27,6 @@
                  <h3><b>repo</b></h3>
                 <input class="w3-input w3-border w3-animate-input" type="text" style="width:40%"
                   placeholder="레포지토리 이름을 입력하세요." name="repo" >
-                <h3><b>github token</b></h3>
-                <input class="w3-input w3-border" type="text" style="width:40%"
-                  placeholder="깃허브 토큰을 입력하세요." name="token">
                   <div class="w3-bar">
                     <button
                       class="w3-button w3-padding-large w3-margin-bottom w3-border w3-round-large w3-teal" type="submit"><b>commit 불러오기</b></button>
@@ -41,7 +38,6 @@
 
             <form class="w3-container" action="{%url 'createPost'%}" method="post">
               {% csrf_token %}
-              <input type="hidden" name="token" id="token" value={{token}}>
               <input type="hidden" name="owner" id="owner" value={{owner}}>
               <input type="hidden" name="repo" id="repo" value={{repo}}>
 
