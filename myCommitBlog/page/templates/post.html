@@ -55,17 +55,19 @@
               <div class="w3-container">
                 <div class="w3-card-2 w3-margin w3-margin-top">
                       <div class="w3-container w3-white">
-                        <h4>{{post.comment}}</h4>
+                        <h4>{{commit.comment}}</h4>
                       </div>
                 </div>
               </div>
               {% endfor %}
-
+            {% if user == post.user %}
             <div class="w3-container w3-margin w3-margin-top w3-center">
               <button class="w3-button w3-padding-large w3-margin-bottom w3-border w3-round-large w3-teal" onclick="location.href='{% url 'editPost' post.id%}' "><b>EDIT</b></button>
               <button class="w3-button w3-padding-large w3-margin-bottom w3-border w3-round-large w3-red" onclick="location.href='{% url 'deletePost' post.id%}' "><b>DELETE</b></button>
             </div>
+            {% endif %}
           </div>
+
           <!-- END BLOG ENTRIES -->
         </div>
         <!-- END GRID -->

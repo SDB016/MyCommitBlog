@@ -29,14 +29,17 @@ def post(request, id):
     return render(request, "post.html", {'post': post})
 
 def createPost(request):
-    newPost = Post().create(request.POST['title'], request.POST['comments'])
-
+    comment_count = 0
+    comments = request.POST.getlist('comments[]')
+    newPost = Post().create(request.POST['title'])
+    newPost.user = request.user
     token = request.POST['token']
     owner = request.POST['owner']
     repo = request.POST['repo']
     commits = getCommits(token, owner, repo)
     for commit in commits:
         c = Commit().create(newPost.id)
+        c.comment = comments[comment_count]
         c.message = commit['message']
         for file in commit['files']:
             f = File()
@@ -45,6 +48,7 @@ def createPost(request):
             f.commit_id = c.id
             f.save()
         c.save()
+        comment_count +=1
     newPost.save()
 
     return redirect('post', newPost.id)
@@ -55,11 +59,18 @@ def editPost(request, id):
 
 def updatePost(request,id):
     updatePost = Post.objects.get(id=id)
+    comment_count = 0
+    comments = request.POST.getlist('comments[]')
     updatePost.title = request.POST['title']
-    updatePost.comment = request.POST['comments']
     updatePost.updatedDate = timezone.now()
     updatePost.save()
-    return redirect('post', updatePost.id)
+    commits = Commit.objects.filter(post_id=id)
+    for commit in commits:
+        commit.comment = comments[comment_count]
+        comment_count+=1
+        commit.save()
+    
+    return render(request, "post.html", {'post': updatePost})
 
 def deletePost(request, id):
     deletePost = Post.objects.get(id=id)
