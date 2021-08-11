@@ -32,7 +32,7 @@ def createPost(request):
     comment_count = 0
     comments = request.POST.getlist('comments[]')
     newPost = Post().create(request.POST['title'])
-    
+    newPost.user = request.user
     token = request.POST['token']
     owner = request.POST['owner']
     repo = request.POST['repo']
@@ -55,16 +55,22 @@ def createPost(request):
 
 def editPost(request, id):
     editPost = get_object_or_404(Post, pk = id)
-    commits = get_object_or_404(Commit)
     return render(request, "edit.html", {'post': editPost})
 
 def updatePost(request,id):
     updatePost = Post.objects.get(id=id)
+    comment_count = 0
+    comments = request.POST.getlist('comments[]')
     updatePost.title = request.POST['title']
-    updatePost.comment = request.POST['comments']
     updatePost.updatedDate = timezone.now()
     updatePost.save()
-    return redirect('post', updatePost.id)
+    commits = Commit.objects.filter(post_id=id)
+    for commit in commits:
+        commit.comment = comments[comment_count]
+        comment_count+=1
+        commit.save()
+    
+    return render(request, "post.html", {'post': updatePost})
 
 def deletePost(request, id):
     deletePost = Post.objects.get(id=id)

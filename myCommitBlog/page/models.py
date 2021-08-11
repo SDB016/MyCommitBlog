@@ -1,17 +1,22 @@
 from django.db import models
 from django.utils import timezone
+from account.models import CustomUser
 
 class Post(models.Model):
     title = models.CharField(max_length=50, null=False)
     #comment = models.TextField(null=True) #TODO comment필드를 commit 객체에 할당
-    writer = models.CharField(max_length=20, null=False)
     createdDate = models.DateTimeField(auto_now_add=True)
     updatedDate = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.DO_NOTHING, 
+        null=True
+    )
+    
 
     def create(self, title):
         newPost = Post()
         newPost.title = title
-        newPost.writer = "withCat"
         newPost.createdDate = timezone.now()
         newPost.updatedDate = timezone.now()
         newPost.save()

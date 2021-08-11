@@ -17,27 +17,26 @@
               </div>
             </div>
 
-            <form class="w3-container" action="{% url 'updatePost' post.id %}" method="post">
+            <form class="w3-container" action="{%url 'updatePost' post.id%}" method="post">
               {% csrf_token %}
-              <input type="hidden" name="token" id="token" value={{token}}>
+              <!-- <input type="hidden" name="token" id="token" value={{token}}>
               <input type="hidden" name="owner" id="owner" value={{owner}}>
-              <input type="hidden" name="repo" id="repo" value={{repo}}>
+              <input type="hidden" name="repo" id="repo" value={{repo}}> -->
 
               <div class="w3-container">
                 <h3><b>Title</b></h3>
-                <input class="w3-input w3-border w3-animate-input" type="text" style="width:40%"
-                  placeholder="글 제목을 입력해주세요" name="title" >
+                <input class="w3-input w3-border w3-animate-input" type="text" style="width:40%" value={{post.title}} name="title">
               </div>
               <br>
 
 
 
-              {% for commit in commits %}
+              {% for commit in post.commit.all %}
               <div>
                 <div class="w3-container">
                   <h3><b>Commit</b></h3>
                 </div>
-                {% for file in commit.files %}
+                {% for file in commit.file.all %}
                 <div class="w3-row">
                   <div class="w3-col l6">
                     <div class="w3-card-2 w3-margin w3-margin-top">
@@ -77,14 +76,14 @@
               <div class="w3-container">
                 <h3><b>Comments</b></h3>
                 <div class="w3-group">
-                  <textarea class="w3-input w3-border w3-animate-input" name="comments[]" style="width:70%" placeholder="내용을 작성해주세요"
-                    required></textarea>
+                  <textarea class="w3-input w3-border w3-animate-input" name="comments[]" style="width:70%" required>{{commit.comment}}</textarea>
                 </div>
                 <br>
                 <br>
               </div>
 
               </div>
+
               {% endfor %}
 
               <div class="w3-container">
