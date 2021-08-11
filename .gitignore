@@ -154,3 +154,5 @@ cython_debug/
 .idea/workspace.xml
 myCommitBlog/.idea/
 .idea/
+
+secret.json
