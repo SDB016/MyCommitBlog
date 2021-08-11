@@ -8,7 +8,8 @@ import requests
 
 def home(request):
     posts = Post.objects.all()
-    return render(request, "home.html", {'posts': posts})
+    sortedPosts = Post.objects.all().order_by('-hits')[:3]
+    return render(request, "home.html", {'posts': posts, 'sortedPosts':sortedPosts})
 
 def posts(request):
     posts = Post.objects.all()
@@ -26,6 +27,7 @@ def posting(request):
 
 def post(request, id):
     post = get_object_or_404(Post, pk = id)
+    post.click()
     return render(request, "post.html", {'post': post})
 
 def createPost(request):

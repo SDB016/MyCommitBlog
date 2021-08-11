@@ -22,6 +22,9 @@
                       <div class="w3-col m8 s12">
                         <p><button class="w3-button w3-padding-large w3-white w3-border" onclick="location.href='{% url 'post' post.id %}'"><b>READ MORE »</b></button></p>
                       </div>
+                      <div class="w3-col m4 w3-hide-small">
+                        <p><span class="w3-padding-large w3-right"><b>Hits  </b> <span class="w3-tag">{{post.hits}}</span></span></p>
+                      </div>
                     </div>
                   </div>
                 </div>

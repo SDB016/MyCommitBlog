@@ -16,7 +16,7 @@
                   <div class="w3-container">
                     <h3><b>{{post.title}}</b></h3>
                     <h5>Title description, <span class="w3-opacity">{{post.createdDate}}</span></h5>
-                    <h6>#TODO</h6>
+                    <h6>{{post.commit.all.first.comment}}</h6>
                   </div>
 
                   <div class="w3-container">
@@ -25,6 +25,10 @@
                       <div class="w3-col m8 s12">
                         <p><button class="w3-button w3-padding-large w3-white w3-border" onclick="location.href='{% url 'post' post.id %}'"><b>READ MORE »</b></button></p>
                       </div>
+                      <div class="w3-col m4 w3-hide-small">
+                        <p><span class="w3-padding-large w3-right"><b>Hits  </b> <span class="w3-tag">{{post.hits}}</span></span>
+                      </p>
+                    </div>
                     </div>
                   </div>
                 </div>
@@ -63,26 +67,12 @@
               <h4>Popular Posts</h4>
             </div>
             <ul class="w3-ul w3-hoverable w3-white">
-              <li class="w3-padding-16">
-                <img src="{%static 'post_img4.png'%}" alt="Image" class="w3-left w3-margin-right" style="width:100%">
-                <span class="w3-large">Account controller</span><br>
-                <span>Sed mattis nunc</span>
-              </li>
-              <li class="w3-padding-16">
-                <img src="{%static 'post_img1.png'%}" alt="Image" class="w3-left w3-margin-right" style="width:100%">
-                <span class="w3-large">Sign up</span><br>
-                <span>Praes tinci sed</span>
-              </li>
-              <li class="w3-padding-16">
-                <img src="{%static 'post_img3.png'%}" alt="Image" class="w3-left w3-margin-right" style="width:100%">
-                <span class="w3-large">Notification view</span><br>
-                <span>Ultricies congue</span>
-              </li>
+              {% for post in sortedPosts %}
               <li class="w3-padding-16 w3-hide-medium w3-hide-small">
-                <img src="{%static 'post_img2.png'%}" alt="Image" class="w3-left w3-margin-right" style="width:100%">
-                <span class="w3-large">Profile view</span><br>
-                <span>Lorem ipsum dipsum</span>
+                <span class="w3-large">{{post.title}}</span><br>
+                <span>{{post.commit.all.first.comment}}</span>
               </li>
+              {% endfor %}
             </ul>
           </div>
           <hr>
