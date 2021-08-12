@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% block content %}
+
+      <!-- Grid -->
+      <div class="w3-row">
+
+        <!-- Blog entries -->
+        <div class="w3-col l12 s12">
+          <!-- Blog entry -->
+
+          <div class="w3-card-4 w3-margin ">
+            <div class="w3-container w3-teal">
+              <div class="w3-center">
+                <h2>Profile</h2>
+              </div>
+            </div>
+
+            
+            <form class="w3-container" action="{%url 'updateProfile' user.id%}" method="post">
+              {% csrf_token %}
+              <div class="w3-container">
+                <h3><b>username</b></h3>
+                <input class="w3-input w3-border" type="text" style="width:40%"
+                  value={{user.username}} name="username">
+                <h3><b>short description</b></h3>
+                <input class="w3-input w3-border" type="text" style="width:40%"
+                  value={{user.shortDescription}} name="shortDescription">
+                <h3><b>full description</b></h3>
+                <textarea class="w3-input w3-border" style="width:40%"
+                          name="fullDescription">{{user.fullDescription}}</textarea>
+                 <h3><b>github</b></h3>
+                <input class="w3-input w3-border" type="text" style="width:40%"
+                  value={{user.github}} name="github">
+                <h3><b>github token</b></h3>
+                <input class="w3-input w3-border" type="text" style="width:40%"
+                  value={{user.token}} name="token">
+                  <div class="w3-bar">
+                    <button
+                      class="w3-button w3-padding-large w3-margin-bottom w3-border w3-round-large w3-teal" type="submit"><b>UPDATE</b></button>
+                  </div>
+              </div>
+            </form>
+          </div>
+          <!-- END BLOG ENTRIES -->
+        </div>
+        <!-- END GRID -->
+      </div><br>
+{% endblock %}

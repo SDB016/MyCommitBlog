@@ -1,0 +1,1 @@
+web: gunicorn myCommitBlog.wsgi --log-file -

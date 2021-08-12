@@ -10,56 +10,64 @@
 
           <div class="w3-card-4 w3-margin ">
               <div class="w3-container">
-                <h2>{{post.title}}</h2>
+                <h1>{{post.title}}</h1>
               </div>
-                {% for commit in post.commits.all %}
-                <div>
-                  <br>
-                  <div class="w3-row">
-                    <div class="w3-col l6">
-                      <div class="w3-card-2 w3-margin w3-margin-top">
-                        <div class="w3-container w3-white">
-                          <h4><b>filename</b></h4>
-                          <p>
-                            {{commit.fileName}}
-                          </p>
-                          <a href={{commit.url}}>
-                            <img src="{%static 'githubImg.png'%}" class="w3-hover-opacity w3-margin-top" alt="Norway" style="width:30%">
-                          </a>
-                        </div>
+                {% for commit in post.commit.all %}
+                <div class="w3-container">
+                  <h3><b>Commit</b></h3>
+                </div>
+                {% for file in commit.file.all %}
+              <div>  
+                <div class="w3-row w3-margin w3-margin-top">
+                  <div class="w3-col l6">
+                    <div class="w3-card-2 w3-margin w3-margin-top">
+                      <div class="w3-container w3-white">
+                        <h4><b>filename</b></h4>
+                        <p>
+                          {{file.fileName}}
+                        </p>
+                        <a href="https://github.com/Trade-Us/unlabeld-tsdata-clustering/commit/eddf66db3bd15315d572e66bea350dc5413effe7/UIwithTemplate/app.py#diff-222d1d40afad31f2f9966af83b4b7c547edcc061b1536bb3c62e4a33f9ffbf4f">
+                          <img src="{%static 'githubImg.png'%}" class="w3-hover-opacity w3-margin-top" alt="Norway" style="width:30%">
+                        </a>
                       </div>
-                      <hr>
-
                     </div>
-                    <div class="w3-col l6 w3-right  ">
-                      <div class="w3-card-2 w3-margin w3-margin-top">
-                        <div class="w3-container w3-white">
-                          <h4><b>message</b></h4>
-                          <p>
-                              {{commit.message}}
-                          </p>
-                        </div>
+                    <hr>
+                  </div>
+                  <div class="w3-col l6 w3-right">
+                    <div class="w3-card-2 w3-margin w3-margin-top">
+                      <div class="w3-container w3-white">
+                        <h4><b>message</b></h4>
+                        <p>
+                          {{commit.message}}
+                        </p>
                       </div>
-                      <hr>
                     </div>
-                  </div>
-                  <div class="w3-container">
-                    <pre class="prettyprint lang-python w3-white w3-card-2">
-                      @@ -373,13 +373,19 @@ def store_rp_param(img_size, dim, td, th, prtg):<br>     Input(\"autoencoder-learning-rate\", \"value\"),<br>     Input(\"autoencoder-loss-function\", \"value\"),<br>     Input(\"autoencoder-activation-function\", \"value\"),<br>+    Input(\"autoencoder-epoch\", \"value\"),<br>+    Input(\"autoencoder-optimizer\", \"value\"),<br>+    Input(\"autoencoder-dimension-feautre\", \"value\"),<br> )<br>-def store_ae_param(bs, lr, loss_f, act_f):<br>+def store_ae_param(bs, lr, loss_f, act_f, epoch, optm, dim):<br>     df = pd.DataFrame()<br>     df['batch_size'] = [bs]<br>     df['learning_rate'] = [lr]<br>     df['loss_function'] = [loss_f]<br>     df['activation_function'] = [act_f]<br>+    df['epoch'] = [epoch]<br>+    df['optimizer'] = [optm]<br>+    df['dimension_feature'] = [dim]<br>     data = df.to_dict('records')<br>     return data<br> <br>@@ -442,7 +448,7 @@ def exct_ts_sample_kmeans(n_clicks, km_data, parti_columns, value, normalize):<br>     result_ = result_.reshape(result_.shape[0],min_len)<br>     print(result_.shape)<br> <br>-    result = kmeans(result_,km_data[0]['number_of_cluster'] ,float(km_data[0]['tolerance']),km_data[0]['try_n_init']<br>    ,km_data[0]['try_n_kmeans'])<br>+    result = kmeans(result_,km_data[0]['number_of_cluster'] , km_data[0]['tolerance'],km_data[0]['try_n_init']<br>    ,km_data[0]['try_n_kmeans'])<br> <br>     print(result.labels_)<br>     return []<br>@@ -487,12 +493,12 @@ def exct_rp_autoencoder_kmeans(n_clicks, rp_data, ae_data, km_data,  parti_colum<br>     #(242,28,1)<br>     result_ = result_.reshape(result_.shape[0],1,result_.shape[1])<br>     #(242,28,28)<br>-    X = toRPdata(result_,rp_data[0]['dimension'],rp_data[0]['time_delay'],None,rp_data[0]['percentage'])<br>+    X = toRPdata(result_,rp_data[0]['dimension'],rp_data[0]['time_delay'],rp_data[0]['threshold'],rp_data[0]['percentage'] / 100)<br>     X_expand = np.expand_dims(X,axis=3)<br>     print(X_expand.shape)<br>-    all_feature = fit_autoencoder(X_expand,rp_data[0]['image_size'],32,'Adam',3e-5,ae_data[0]['activation_function']<br>    ,'binary_crossentropy',ae_data[0]['batch_size'],5)<br>+    all_feature = fit_autoencoder(X_expand,rp_data[0]['image_size'],ae_data[0]['dimension_feature'],ae_data[0]['optimizer']<br>    ,(3e-7) * (10**ae_data[0]['learning_rate']),ae_data[0]['activation_function'],ae_data[0]['loss_function'],ae_data[0]<br>    ['batch_size'],ae_data[0]['epoch'])<br>     print(all_feature.shape)<br>-    result = kmeans(all_feature,km_data[0]['number_of_cluster'] ,float(km_data[0]['tolerance']),km_data[0]['try_n_init']<br>    ,km_data[0]['try_n_kmeans'])<br>+    result = kmeans(all_feature, km_data[0]['number_of_cluster'] , km_data[0]['tolerance'], km_data[0]['try_n_init']<br>, km_data[0]['try_n_kmeans'])<br> <br>     return []<br> # rp-ae-hierarchy
-                    </pre>
-                  </div>
-                  <div class="w3-container">
-                    <h3><b>Comments</b></h3>
-                    <div class="w3-group">
-                      <h4>{{commit.comment }}</h4>
-                    </div>
-                    <br><br>
+                    <hr>
                   </div>
                 </div>
-                {% endfor %}
-            <button class="w3-button w3-padding-large w3-margin-bottom w3-border w3-round-large w3-teal" onclick="location.href='{% url 'editPost' post.id%}' "><b>EDIT</b></button>
-            <button class="w3-button w3-padding-large w3-margin-bottom w3-border w3-round-large w3-red" onclick="location.href='{% url 'deletePost' post.id%}' "><b>DELETE</b></button>
+                <div class="w3-container">
+                  <pre class="prettyprint lang-python w3-white w3-card-2 w3-margin w3-margin-top">
+                    {{file.patch}}
+                  </pre>
+                </div>
+              </div>
+              {% endfor %}
+              <div class="w3-container">
+                <div class="w3-card-2 w3-margin w3-margin-top">
+                      <div class="w3-container w3-white">
+                        <h4>{{commit.comment}}</h4>
+                      </div>
+                </div>
+              </div>
+              {% endfor %}
+            {% if user == post.user %}
+            <div class="w3-container w3-margin w3-margin-top w3-center">
+              <button class="w3-button w3-padding-large w3-margin-bottom w3-border w3-round-large w3-teal" onclick="location.href='{% url 'editPost' post.id%}' "><b>EDIT</b></button>
+              <button class="w3-button w3-padding-large w3-margin-bottom w3-border w3-round-large w3-red" onclick="location.href='{% url 'deletePost' post.id%}' "><b>DELETE</b></button>
+            </div>
+            {% endif %}
           </div>
+
           <!-- END BLOG ENTRIES -->
         </div>
         <!-- END GRID -->
