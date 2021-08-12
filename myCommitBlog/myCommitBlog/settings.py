@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = (os.environ.get('DEBUG','True') != 'False')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'account.CustomUser'
 
 # Application definition
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleWare',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -153,3 +154,7 @@ AWS_STORAGE_BUCKET_NAME = get_secret("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_SIGNATURE_VERSION = 's3v4'
 AWS_S3_REGION_NAME = 'ap-northeast-2'
 AWS_S3_CUSTOM_DOMAIN = 'nksvv.cloudfront.net'
+
+import dj_database_url
+db_from_env = dj_database_url.config(con_max_age = 500)
+DATABASES['default'].update(db_from_env)
