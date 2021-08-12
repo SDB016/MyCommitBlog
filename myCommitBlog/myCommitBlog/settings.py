@@ -24,7 +24,7 @@ SECRET_KEY = os.environ.get(
     'SECRET_KEY','django-insecure-!k^hq9ud&i0d9m*mhqch#uu-1i4)8iev@dls_+kk4z&0^so9!f')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = (os.environ.get('DEBUG','True') != 'False')
+DEBUG = (os.environ.get('DEBUG', 'True') != 'False')
 
 ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'account.CustomUser'
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleWare',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -122,10 +122,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -137,9 +140,13 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 import json
 from django.core.exceptions import ImproperlyConfigured
 
-with open("secret.json") as f:
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+secret_file = os.path.join(BASE_DIR, 'secret.json')
+
+with open(secret_file) as f:
     secrets = json.loads(f.read())
 
+# Keep secret keys in secrets.json
 def get_secret(setting, secrets=secrets):
     try:
         return secrets[setting]
@@ -156,5 +163,5 @@ AWS_S3_REGION_NAME = 'ap-northeast-2'
 AWS_S3_CUSTOM_DOMAIN = 'nksvv.cloudfront.net'
 
 import dj_database_url
-db_from_env = dj_database_url.config(con_max_age = 500)
+db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
